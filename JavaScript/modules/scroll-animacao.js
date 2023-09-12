@@ -1,21 +1,20 @@
-export default function initAnimacaoScroll() {
-    const sections = document.querySelectorAll('[data-anime="scroll"]');
-    const windowMetade = window.innerHeight * 0.6;
-  
-    function animaScroll() {
-      sections.forEach((section) => {
-        const sectionTop = section.getBoundingClientRect().top;
-        const isSectionVisible = (sectionTop - windowMetade) < 0;
-        if (isSectionVisible) {
-          section.classList.add('ativo');
-        } else if (section.classList.contains('ativo')) {
-          section.classList.remove('ativo');
-        }
+export default function outsideClick(element, events, callback) {
+  const html = document.documentElement;
+  const outside = 'data-outside';
+  function handleOutsideClick(event) {
+    if (!element.contains(event.target)) {
+      element.removeAttribute(outside);
+      events.forEach((userEvent) => {
+        html.removeEventListener(userEvent, handleOutsideClick);
       });
-    }
-    if (sections.length) {
-      animaScroll();
-      window.addEventListener('scroll', animaScroll);
+      callback();
     }
   }
-  
+
+  if (!element.hasAttribute(outside)) {
+    events.forEach((userEvent) => {
+      setTimeout(() => html.addEventListener(userEvent, handleOutsideClick));
+    });
+    element.setAttribute(outside, '');
+  }
+}

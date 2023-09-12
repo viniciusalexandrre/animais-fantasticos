@@ -11,7 +11,7 @@ export default class ScrollSuave {
     }
 
      scrollToSection(event) {
-        event.prevetDefault();
+        event.preventDefault();
         const href = event.currentTarget.getAttribute('href');
         const section = document.querySelector(href);
         section.scrollIntroView(this.options);
@@ -29,5 +29,4 @@ export default class ScrollSuave {
          }
             return this
     } 
-     ;
 }
